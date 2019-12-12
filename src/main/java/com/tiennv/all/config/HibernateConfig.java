@@ -8,19 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 import org.springframework.core.env.Environment;
 
 
-@Configuration
-@EnableTransactionManagement
+
 @PropertySource(value = {"classpath:database.properties"})
 //@PropertySource(value = {"classpath:application.properties", "classpath:application-mysql.properties"})
 public class HibernateConfig {
@@ -51,8 +55,8 @@ public class HibernateConfig {
 //
 //    @Value("${entitymanager.packagesToScan}")
 //    private String ENTITYMANAGER_PACKAGES_TO_SCAN;
-
-    @Bean
+	
+//    @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
     	//Cách 1: dùng enviroment
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -66,7 +70,7 @@ public class HibernateConfig {
         return sessionFactory;
     }
 
-    @Bean
+//    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
       //Cách 1: dùng enviroment
@@ -83,18 +87,14 @@ public class HibernateConfig {
         return dataSource;
     }
 
-    @Bean
-    public HibernateTransactionManager transactionManager() {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory().getObject());
-        return txManager;
+//    @Bean(name="transactionManager") 
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager
+          = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
     }
+ 
     
-    @Bean
-    public JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
-        return jpaTransactionManager;
-    }
 }
 

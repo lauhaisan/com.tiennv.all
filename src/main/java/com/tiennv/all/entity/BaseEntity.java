@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @MappedSuperclass
 public abstract class BaseEntity {
 	
@@ -19,12 +22,14 @@ public abstract class BaseEntity {
 	private String createdBy;
 	
 	@Column
+	@CreationTimestamp
 	private Date createdDate;
 	
 	@Column
 	private String modifiedBy;
 	
 	@Column
+	@UpdateTimestamp
 	private Date modifiedDate;
 	
 	public Long getId() {

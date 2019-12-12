@@ -29,26 +29,26 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DocumentationConfig {
 
-  @Bean
-  public Docket newsApi() {
-    final Docket dock =
-        new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.syniverse.wdm")).paths(PathSelectors.any()).build();
-    final ApiInfo apiInformation =
-        new ApiInfoBuilder().title("General's armed forces REST APIs").version(this.getClass().getPackage().getImplementationVersion()).build();
-    dock.forCodeGeneration(true);
-    dock.apiInfo(apiInformation);
-    dock.useDefaultResponseMessages(false);
-    dock.produces(new HashSet<>(Collections.singletonList("application/json")));
-    return dock;
-  }
-  
-  @Bean("threadPoolTaskExecutor")
-  public TaskExecutor getAsyncExecutor() {
-      ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-      executor.setCorePoolSize(2);
-      executor.setMaxPoolSize(10);
-      executor.setWaitForTasksToCompleteOnShutdown(true);
-      executor.setThreadNamePrefix("Async-");
-      return executor;
-  }
+	@Bean
+	public Docket newsApi() {
+		final Docket dock = new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.tiennv.all")).paths(PathSelectors.any()).build();
+		final ApiInfo apiInformation = new ApiInfoBuilder().title("General's user REST APIs")
+				.version(this.getClass().getPackage().getImplementationVersion()).build();
+		dock.forCodeGeneration(true);
+		dock.apiInfo(apiInformation);
+		dock.useDefaultResponseMessages(false);
+		dock.produces(new HashSet<>(Collections.singletonList("application/json")));
+		return dock;
+	}
+
+	@Bean("threadPoolTaskExecutor")
+	public TaskExecutor getAsyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(10);
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		executor.setThreadNamePrefix("Async-");
+		return executor;
+	}
 }
