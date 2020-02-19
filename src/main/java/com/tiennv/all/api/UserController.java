@@ -19,19 +19,27 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping(path = "/user-page/v1/")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
-	
+	@Autowired
+	private static Logger logger = LogManager.getLogger(UserController.class);
 	@Autowired
 	private final UserService service;
 	@ApiOperation(value = "List the summary of all the users", notes = "Returns a list of all users")
 	  @ApiResponses({@ApiResponse(code = 200, message = "Success", response = UserEntity.class, responseContainer = "List")})
 	  @GetMapping("/user")
 	  public List<UserEntity> getUsers() {
-		System.out.println("user ");
+		logger.info("This is an info message");
+		logger.debug("This is a debug message");
+        logger.info("This is an info message");
+        logger.warn("This is a warn message");
+        logger.error("This is an error message");
+        logger.fatal("This is a fatal message");
 	    return service.getUsers();
 	  }
 
